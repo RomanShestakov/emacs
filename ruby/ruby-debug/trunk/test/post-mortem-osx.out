@@ -1,0 +1,32 @@
+pm.rb:3
+def zero_div
+# # ***************************************************
+# # This tests post-mortem handling.
+# # ***************************************************
+# set debuggertesting on
+Currently testing the debugger is on.
+# continue
+pm.rb:5
+1/0
+# # Should have got a divide by 0 error
+# info program
+The program crashed.
+Exception: #<ZeroDivisionError: divided by 0>
+# where
+--> #0 / at line pm.rb:5
+    #1 at line pm.rb:8
+# up
+#1 at line pm.rb:8
+# p x
+2
+# help
+Type 'help <command-name>' for help on a specific command
+
+Available commands:
+backtrace  delete   enable  info    pp      restart  thread     var  
+break      disable  eval    irb     ps      save     tmate      where
+catch      display  exit    list    putl    set      trace    
+condition  down     frame   method  quit    show     undisplay
+continue   edit     help    p       reload  source   up       
+
+# quit

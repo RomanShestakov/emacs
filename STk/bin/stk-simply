@@ -1,0 +1,2 @@
+#!/bin/sh
+      /Applications/STk/bin/stk -load  /Applications/STk/lib/stk/site-scheme/load-simply "$@"

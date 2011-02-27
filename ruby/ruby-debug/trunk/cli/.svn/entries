@@ -1,0 +1,43 @@
+8
+
+dir
+903
+svn://rubyforge.org/var/svn/ruby-debug/trunk/cli
+svn://rubyforge.org/var/svn/ruby-debug
+
+
+
+2008-11-25T02:43:48.721804Z
+903
+rockyb
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+453b2852-3d18-0410-866e-d09c099698e4
+
+ruby-debug
+dir
+
+ruby-debug.rb
+file
+
+
+
+
+2008-12-07T19:40:24.000000Z
+b8bd9d628255a13adac7d9b5199b2619
+2008-11-14T15:32:22.855120Z
+888
+rockyb
+

@@ -1,0 +1,40 @@
+8
+
+dir
+903
+svn://rubyforge.org/var/svn/ruby-debug/trunk/ext/win32
+svn://rubyforge.org/var/svn/ruby-debug
+
+
+
+2008-11-15T02:21:04.082425Z
+895
+rockyb
+has-props
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+453b2852-3d18-0410-866e-d09c099698e4
+
+.cvsignore
+file
+
+
+
+
+2008-12-07T19:40:05.000000Z
+20a5fbd7abb5e1c9dc74b61c7926e00d
+2008-11-15T02:21:04.082425Z
+895
+rockyb
+

@@ -1,0 +1,26 @@
+#!/Applications/STk/bin/stk -f
+;;;;
+;;;; i n s p e c t o r . s t k   --  A very simple demo of the inspector
+;;;;
+;;;; Copyright © 1993-1999 Erick Gallesio - I3S-CNRS/ESSI <eg@unice.fr>
+;;;; 
+;;;; Permission to use, copy, modify, distribute,and license this
+;;;; software and its documentation for any purpose is hereby granted,
+;;;; provided that existing copyright notices are retained in all
+;;;; copies and that this notice is included verbatim in any
+;;;; distributions.  No written agreement, license, or royalty fee is
+;;;; required for any of the authorized uses.
+;;;; This software is provided ``AS IS'' without express or implied
+;;;; warranty.
+;;;;
+;;;;           Author: Erick Gallesio [eg@unice.fr]
+;;;;    Creation date: 22-Jan-1995 18:09
+;;;; Last file update:  3-Sep-1999 18:57 (eg)
+
+
+(label '.l1 :text "Click on a node of the viewer to see the selected widget" 
+	    :relief 'ridge :fg "blue")
+(label '.l2 :text "Double click on a node to inspect it" :relief 'ridge :fg "blue")
+(inspect .l1)
+(view .inspector)
+(pack .l1 .l2 :expand #t :fill 'x)

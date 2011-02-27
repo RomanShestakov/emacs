@@ -1,0 +1,31 @@
+#!/bin/sh
+:;exec /Applications/STk/bin/stk -f "$0" "$@"
+;;;;
+;;;; f i l e b o x  . s t k l o s 	-- A demo of the <FileBox> class
+;;;;
+;;;; Copyright © 1993-1999 Erick Gallesio - I3S-CNRS/ESSI <eg@unice.fr>
+;;;; 
+;;;; Permission to use, copy, modify, distribute,and license this
+;;;; software and its documentation for any purpose is hereby granted,
+;;;; provided that existing copyright notices are retained in all
+;;;; copies and that this notice is included verbatim in any
+;;;; distributions.  No written agreement, license, or royalty fee is
+;;;; required for any of the authorized uses.
+;;;; This software is provided ``AS IS'' without express or implied
+;;;; warranty.
+;;;;
+;;;;           Author: Erick Gallesio [eg@kaolin.unice.fr]
+;;;;    Creation date: 12-Jun-1994 11:24
+;;;; Last file update:  3-Sep-1999 18:57 (eg)
+
+(require "Tk-classes")
+
+;; Just create a filebox and return the selected value
+(let ((result (Tk:get-open-file)))
+  (apply format #t (if result
+		       (list "You have selected the file ~S\n" result)
+		       (list "CANCEL. No file selected\n")))
+  (exit 0))
+
+
+

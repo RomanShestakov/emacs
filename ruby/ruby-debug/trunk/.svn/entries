@@ -1,0 +1,220 @@
+8
+
+dir
+903
+svn://rubyforge.org/var/svn/ruby-debug/trunk
+svn://rubyforge.org/var/svn/ruby-debug
+
+
+
+2008-11-25T02:43:48.721804Z
+903
+rockyb
+has-props
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+453b2852-3d18-0410-866e-d09c099698e4
+
+test
+dir
+
+rdbg.rb
+file
+
+
+
+
+2008-12-07T19:40:25.000000Z
+0417bf34bf7581035f532ef22888dbaa
+2008-03-13T02:15:04.173847Z
+756
+rockyb
+has-props
+
+Rakefile
+file
+
+
+
+
+2008-12-07T19:40:25.000000Z
+f09d518140ff9cd6c1c8f2f0b4c27ca1
+2008-11-15T22:13:42.454472Z
+898
+rockyb
+
+LICENSE
+file
+
+
+
+
+2008-12-07T19:40:25.000000Z
+e4e2de7f484d4114ebc230d58a7ecb45
+2006-10-09T16:44:37.404310Z
+1
+kent
+
+runner.sh
+file
+
+
+
+
+2008-12-07T19:40:25.000000Z
+901417159e1ec82f31038ae47f3e1a92
+2007-10-12T10:15:12.815384Z
+313
+rockyb
+has-props
+
+AUTHORS
+file
+
+
+
+
+2008-12-07T19:40:25.000000Z
+7a33f93e87e2c2d5c19278064c9c8e0f
+2007-12-25T02:51:25.332064Z
+470
+rockyb
+
+ChangeLog
+file
+
+
+
+
+2008-12-07T19:40:26.000000Z
+a40355da3ab16af851e6d15f170cd8b0
+2008-11-25T02:43:48.721804Z
+903
+rockyb
+
+emacs
+dir
+
+README
+file
+
+
+
+
+2008-12-07T19:40:26.000000Z
+86b230a908d477f08ab00c45d23c44ce
+2008-11-14T19:37:27.885354Z
+890
+rockyb
+
+ext
+dir
+
+svn2cl_usermap
+file
+
+
+
+
+2008-12-07T19:40:26.000000Z
+6ad7e7f1cffb87483c5178bbbeeccea3
+2007-12-23T17:33:58.704725Z
+464
+rockyb
+
+configure.ac
+file
+
+
+
+
+2008-12-07T19:40:26.000000Z
+f18eb570b1847bdcb921e0223c8de1c3
+2008-11-25T02:43:48.721804Z
+903
+rockyb
+
+doc
+dir
+
+lib
+dir
+
+cli
+dir
+
+bin
+dir
+
+CHANGES
+file
+
+
+
+
+2008-12-07T19:40:26.000000Z
+8c0a7dd3fd5e35549c5e4a1fc307e656
+2008-11-17T07:34:17.628629Z
+900
+rockyb
+
+Makefile.am
+file
+
+
+
+
+2008-12-07T19:40:26.000000Z
+04e0a34a7a882ed308210e03adb1ce5e
+2008-01-07T04:29:24.553866Z
+557
+rockyb
+
+autogen.sh
+file
+
+
+
+
+2008-12-07T19:40:26.000000Z
+eedccb0ee1685ebb7b844ac7af56ffa3
+2007-11-22T13:27:54.839870Z
+360
+rockyb
+has-props
+
+INSTALL.SVN
+file
+
+
+
+
+2008-12-07T19:40:26.000000Z
+9e28ee5f6aad464fab83a6a622e70ae2
+2008-02-08T02:09:10.299816Z
+671
+rockyb
+
+.cvsignore
+file
+
+
+
+
+2008-12-07T19:40:26.000000Z
+b094278c92fdd953df66f8e0278078e5
+2008-11-15T02:18:48.009649Z
+893
+rockyb
+

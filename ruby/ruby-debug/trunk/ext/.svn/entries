@@ -1,0 +1,79 @@
+8
+
+dir
+903
+svn://rubyforge.org/var/svn/ruby-debug/trunk/ext
+svn://rubyforge.org/var/svn/ruby-debug
+
+
+
+2008-11-25T02:43:48.721804Z
+903
+rockyb
+has-props
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+453b2852-3d18-0410-866e-d09c099698e4
+
+breakpoint.c
+file
+
+
+
+
+2008-12-07T19:40:07.000000Z
+610f2bc56bc59a515db9e8de525ed38a
+2008-11-10T01:36:42.128866Z
+875
+kent
+
+win32
+dir
+
+extconf.rb
+file
+
+
+
+
+2008-12-07T19:40:07.000000Z
+1ec25a00c190c70a6b837d93b97ef89e
+2008-10-26T14:54:38.520757Z
+868
+rockyb
+
+ruby_debug.c
+file
+
+
+
+
+2008-12-07T19:40:07.000000Z
+11992694332647ca24287646f3f1ebf0
+2008-11-25T02:43:48.721804Z
+903
+rockyb
+
+ruby_debug.h
+file
+
+
+
+
+2008-12-07T19:40:07.000000Z
+cf31ad547bcd4588c118fbd7113a73ac
+2008-11-10T01:50:00.815934Z
+880
+kent
+

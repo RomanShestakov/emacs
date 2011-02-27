@@ -1,0 +1,483 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Demo directory README (Version 4.0)</title>
+  </head>
+
+  <body bgcolor="#FFFFFF">
+    <h1><img src="STk-normal.gif"> Demo directory</h1>
+
+<! Applet definition: This applet defines new function which can run a demo
+   using the SYSTEM function.
+   This is VERY DANGEROUS, but user can set security to a given level
+   when launching the browser.
+   Security is not yet finished and need some work
+>
+
+<script language="STk">
+
+(lambda (parent url)
+   (eval '(begin
+            (define *interp*
+                    (if (file-exists? "../Src/test-stk") "../Src/test-stk" "stk"))
+            (define (run x) (system (string-append *interp* " " x " &amp;"))))
+         (global-environment)))
+
+</script>
+
+
+<! ------------------------------------------------------------------------------>
+    <pre>
+    
+
+    </pre>
+
+    <h4>Content</h4> 
+    <ul>
+	This directory contains the demo programs for <b>STk</b>.
+	There are several categories of demos available from here:
+	<ul>      
+	  <li> <a href="README.html#stk">STk demos</a>: They correspond to
+	    program which don't use CLOS like object extension of
+	    <b>STk</b>. These demo are quite simple and they often mimic
+	    original Tcl/Tk demonstrations
+	  <li> <a href="README.html#stklos">STklos demos</a>: These
+	    demonstration programs use the STklos object Extension of
+	    <B>STk</B>.  The code of most of these demos has been kept short 
+	    to illustrate the basic of STklos programming.
+	  <li> <a href="Html-Demos/main.html">Html demo</a>: This demo is 
+	    in fact an overview of STk/STklos that I have used once in a 
+	    presentation of STklos. The pages accessible from this link 
+	    present STk but also contains links or Scheme applets which 
+	    illustrate the kind of things that can be done with the STk 
+	    browser. Of course, to properly execute the applets contained
+	    in theses pages, you need to run the STk Html browser 
+	    (see below).
+	    
+	</ul>
+    </ul>
+    <h4>Running demonstration programs without installing STk</h4>
+    <ul>
+	If you want to run a demo <STRONG>BEFORE</STRONG> a complete
+	installation of the <b>STk</b> package, you must use the shell
+	script <code>../Src/test-stk</code> in order to run the
+	interpreter (this shell script set some variables to run properly 
+	the interpreter without installing it).
+    </ul>
+    <h4>Running demonstration programs in the STk web browser</h4>
+    <ul>
+        <ul>
+	    <b>Note: </b> In this document the notation 
+	    <font color=red>RUN</font> means that you must type either
+	    <i>../Src/test-stk</i> if you have not completed the
+	    installation of <B>STk</b>, either type <i>stk</i>
+	    (provided that the install location is in your path)
+	</ul>
+	<p>
+	<b>STk</b> provides a simple Web browser which can be used to launch 
+	the demo of this directory. If you are not running it now, you can 
+	type the following command:
+	<pre>          <font color=red>RUN</font> -f S-scape README.html</pre>
+	at the shell prompt.
+    </ul>
+
+    <h2><a name="stk">1. STk demos</a></h2>
+    <h4>1.1 Basic STk demos</h4>
+    
+    <UL>
+      <p><li>
+	<B><A name=hello>hello.stk</a></B>
+	<BR>
+	This is the traditional first program. This program creates a single button 
+	that you can click on.
+	<BR>
+	<u>Run with </u>:
+	<a expr=(run "hello.stk")> <font color=red>RUN</font> -f hello.stk </a>
+      <p><li>
+	<B><A name=browse>browse.stk</a></B>
+	<BR>
+	A simple Unix file browser. The code of this demo is less than a page.
+	<BR>
+	<u>Run with</u>:
+	<A expr=(run "browse.stk")>.<font color=red>RUN</font> -f browse.stk </A>
+    </UL>
+
+    <h4>1.2 Basics of STk programming</h4>
+    <UL>
+      <p><li>
+	<B>wtour.stk</B>
+	<BR>
+	This is a rewrite of the Tcl/Tk wtour2.0 in Scheme/STk. Use
+	the menus to navigate through different lessons.  You can make
+	changes to the lesson source code; click on the Apply button
+	to see the results of the changes.
+	<BR>
+	<u>Run with</u>:
+	<A expr=(run "wtour.stk ../Contrib/STk-wtour")>
+		<font color=red>RUN</font> -f ./wtour.stk ../Contrib/STk-wtour
+	     </A>
+	<BR><u>Comment</u>: This code is a contribution of <B>Suresh Srinivas</B>
+	<tt>&lt;ssriniva@cs.indiana.edu&gt;</tt>
+    </UL>
+
+    <h4>1.3 Client/Server Demos</h4>
+    <ul>
+      <p><li>
+	<b>server.stk</b>
+	<br>
+	 A simple server showing how to use the socket package. It
+	 creates an xterm window in which a read-eval-print-loop is
+	 executed. When the window is closed or when an error occurs,
+	 the socket is closed 
+	<br>
+	<u>Run with</u>:
+	 <A expr=(run "-no -f server.stk")> <font color=red>RUN</font> -no -f server.stk </A>
+      <p><li>
+	<b>mc-server.stk</b>
+	<br>
+	A multiple-clients server. On Unix, you can use several telnet
+	sessions to <I>discuss</I> with the server. Each discussion
+	has its own dedicated channel. Type <tt>(exit)</tt> at the <b>STk</b>
+	when you want to exit the demo.
+	<br>
+	<u>Run with</u>:
+	<A expr=(system (string-append "xterm -e " *interp* " -load mc-server.stk &"))>
+	 <font color=red>RUN</font> -load mc-server.stk </A>
+    </ul>
+
+
+    <h4>1.4 Fun and Games</h4>
+    <ul>
+      <p><li>
+        <b>turtle.stk</b>
+	<br>
+	A Logo turtle package + some demo functions.
+	<br>
+	<u>Run with</u>:
+	 <A expr=(run "turtle.stk")> <font color=red>RUN</font> -f turtle.stk </A>
+      <p><li>
+        <b>hanoi.stk</b>
+	<br>
+	Hanoi towers animation.
+	<br>
+	<u>Run with</u>:
+	<A expr=(run "hanoi.stk")> <font color=red>RUN</font> -f hanoi.stk </A>     
+       <p><li>
+	<b>queens.stk</b>
+	<br>
+	The queens problem. You can do it yourself (and it will make
+	sure you follow the rules) or you can ask it to solve the
+	puzzle starting with a given board configuration.
+	<br>
+	<u>Run with</u>:
+	<A expr=(run "queens.stk")> <font color=red>RUN</font> -f queens.stk </A>
+	<br>
+	<u>Comment</u>: This code is a contribution of <b>Grant
+	 Edwards</b> <tt>&lt;grante@rosemount.com)&gt;</tt>
+      <p><li>
+        <b>stetris.stk</b>
+	<br>
+        This is a falling block game not unlike tetris(tm) :). It is
+        implemented in <b>STk</b> just to prove it can be done, and as a
+        challenge to TCLers.  It starts slowly and becomes faster and
+        faster.  Have fun.
+	<br>
+	<u>Run with</u>:
+	<A expr=(run "stetris.stk")> <font color=red>RUN</font> -f stetris.stk </A>
+	<br>
+	<u>Comment</u>:
+	This code is a contribution of <B>Harvey J. Stein</B>
+	<tt>&lt;hjstein@math.huji.ac.il&gt;</tt>
+
+      <p><li>
+	<b>ttt.stk</b>
+	<br>
+	A 3D Tic-Tac-Toe, where the board is 4x4x4, a 3 dimensional
+	board of four planes with four rows and four columns each.
+	<br>
+	<u>Run with</u>:
+	<A expr=(run "ttt.stk")> <font color=red>RUN</font> -f ttt.stk </A>
+	<br>
+	<u>Comment</u>:
+	This code is a contribution of <b>Edin "Dino" Hodzic</b>
+	&lt;ehodzic@scu.edu&gt; 
+    </ul>
+
+
+    <h4>1.5 Misc </h4>
+    <ul>
+      <p><li>
+        <b>console-demo.stk</b>
+	<br>
+	This is a simple demo showing a repl loop in a console.
+	<br>
+	<u>Run with</u>:
+	<A expr=(run "console-demo.stk")> <font color=red>RUN</font> -f console.stk </A>
+	<br>
+	<u>Comment</u>: This demo is useful for Unix users only, since under 
+	   Win32 <B>STk</B> is started with such a console. 
+
+      <p><li>
+        <b>colormap.stk</b>
+	<br>
+	This is a simple color palette written in STk.
+	<br>
+	<u>Run with</u>:
+	<A expr=(run "colormap.stk")> <font color=red>RUN</font> -f colormap.stk </A>
+	<br>
+	<u>Comment</u>: Note that this program is no more really useful since
+	<B>STk</B> offers now the function <tt>Tk:choose-color</tt>
+	which allow to choose a color by name or by value.
+
+      <p><li>
+        <b>stkfontsel.stk</b>
+	<br>
+	This is a simple program which uses the STk font chooser. 
+	<br>
+	<u>Run with</u>:
+	<A expr=(run "stkfontsel.stk")> <font color=red>RUN</font> -f stkfontsel.stk </A>
+
+      <p><li>
+        <b>small-ed.stk</b>
+	<br>
+	A small editor to create enhanced text
+	<br>
+	<u>Run with</u>:
+	<A expr=(run "small-ed.stk")> <font color=red>RUN</font> -f small-ed.stk </A>     
+	<br>
+	<u>Comment</u>: 
+	This editor use a <I>ad-hoc</I> format for saving file and was
+	used for the help buttons of various widgets in old versions
+	of <B>STk</B>.  It will not be developed anymore since the
+	preferred format for help is now HTML.
+
+      <p><li>
+	<b>showvars.stk</b>
+	<br>
+	A variable shower: this program shows the value of three
+	variables (named a,b and c) Changing the value of one of
+	these vars (with a <tt><b>set!</b></tt> for instance) will
+	redisplay its new value immediately.
+        <br>
+	<u>Run with</u>:
+	<A expr=(system (string-append "xterm -e " *interp* " -l showvars.stk &"))>
+	<font color=red>RUN</font> -load showvars.stk </A> 
+	<br>
+
+      <p><li>
+        <b>inspector.stk</b>
+	<br>
+	A simple demo of the inspector on Tk widgets
+	<br>
+	<u>Run with</u>:
+	<A expr=(run "inspector.stk")> <font color=red>RUN</font> -f inspector.stk </A>
+	<br>
+	<u>Comment</u>: 
+	<STRONG> Does not work with this version of <I>STk</I>
+	<BR>A new version of the inspector is in practically finished and 
+	will be soon released.</STRONG>
+
+      <p><li>
+	<b>term.stk</b>
+	<br>
+	A simple terminal emulator (a kind of xterm, but in a text widget).
+	<br>
+	<u>Run with</u>:
+	<A expr=(run "term.stk")> <font color=red>RUN</font> -f term.stk </A>
+	<br>
+	<u>Comment</u>: Users of <b>Glibc2 (aka libc6, or RedHat 5.0
+	users)</b>: This program has problems with new release of the
+	libc under Linux, if your shell has the line editing mode
+	set. To avoid the problem you can
+	<ul>
+	  <li> disable the line editing mode of your shell
+	  <li> set the SHELL variable to a dumb shell (e.g. ash)
+	  <li> link STk with the old libc
+	  <li> don't run the demo :-)
+	</ul>
+    </ul>
+
+
+<! -------------------------------------------------------------------------->
+
+    <h2><a name="stklos">2. STklos demos</a></h2>
+    <ul>
+      All the standard Tk widgets have been wrapped in <b>STklos</b>
+      classes. As a result, in <b>STklos</b>, Tk widgets are seen as instances of
+      <b>STklos</b> classes. 
+      <br> There are two kinds of <b>STklos</b> widgets:
+      <ul>
+	<li> <i>Simple widgets</i> which map one to one the Tk standard
+	widgets 
+
+	<li> <i>Composite widgets</i> which are built from simple Tk
+	widgets (or even simpler composite widgets).
+      </ul>
+      Demonstration programs accessible from this page use indifferently
+     <i>simple widgets</i> and <i>composite widgets</i>.
+    </ul>
+
+    <h4>2.1 Basic STklos demos</h4>
+
+    <ul>
+      <p><li>
+	<b>hello.stklos</b>
+	<br>
+	This is a simple rewriting of the <a HREF=#hello>hello.stk</a>
+	demonstration in <b>STklos</b>
+	<br>
+	<u>Run with</u>:
+	<A expr=(run "hello.stklos")> <font color=red>RUN</font> -f hello.stklos </A>
+
+      <p><li>
+	<b>browse.stklos</b>
+	<br>
+	This is a simple rewriting of the <a HREF=#browse>browse.stk</a>
+	demonstration in <b>STklos</b>
+	<br>
+	<u>Run with</u>:
+	<A expr=(run "browse.stklos")> <font color=red>RUN</font> -f browse.stklos </A>
+
+
+
+      <p><li>
+	<b>stklos-demo.stklos</b>
+	A simple demo written in STklos. 
+	<br>
+	<u>Run with</u>:
+	<A expr=(run "stklos-demo.stklos")><font color=red>RUN</font> -f stklos-demo.stklos</a>
+	<br>
+	<u>Comment</u>: What is interesting in this demo is not what
+	it does, nothing specially fancy, but how it is easy to
+	program, IMHO.
+
+      <p><li>
+	<b>stklos-demo2.stklos</b>
+	Another  simple demo written in STklos. 
+	<br>
+	<u>Run with</u>:
+	<A expr=(run "stklos-demo2.stklos")>
+	<font color=red>RUN</font> -f stklos-demo2.stklos</a>
+	<br>
+	<u>Comment</u>: Here again, what is interesting in this demo is not what
+	it does, nothing specially fancy, but how it is easy to
+	program, IMHO.
+      <p><li>
+	<b>classbrowse.stklos</b>
+	This demo shows the STklos class browser.
+	<br>
+	<u>Run with</u>:
+	<A expr=(run "classbrowse.stklos")>
+	<font color=red>RUN</font> -f classbrowse.stklos</a>
+	<br>
+
+    </ul>
+
+    <h4>2.2 STklos widgets</h4>
+	    
+      <ul>
+      <p><li>
+        <b>widget.stklos</b>
+	<br>
+	A tour of the Tk widgets. This demo shows all the Tk
+	widgets. This is a rewriting in STklos of the big Tcl/Tk demo
+	<tt>widget.tcl</tt>. For each widget demo accessible from this
+	program, you can see the source by just clicking the <tt>"See
+	code"</tt> button. You can modify the code and test your
+	modified version by clicking the button <tt>"Rerun demo"</tt>
+	<br>
+	<u>Run with</u>:
+	<A expr=(run "widget.stk")> <font color=red>RUN</font> -f widget.stk </A>
+	<br>
+	<u>Comment</u>: This demo illustrate only the simple widgets
+	(the ones of the Tk library). For a <i>composite widgets</i>
+	demo look at the <tt>stklos-widgets.stklos</tt> program.
+	
+      <p><li>
+        <b>filebox.stklos</b>
+	<br>
+	This is a simple program which uses the <tt>&lt;File-box&gt;</tt> 
+	<i>composite widget</i>. A <tt>&lt;File-box&gt;</tt> is a file requester
+	with file name completion (on the <tt>Tab</tt> key).This widget is 
+	itself a composition of various composite widget classes.
+	<br>
+	<u>Run with</u>:
+	<A expr=(run "filebox.stklos")>	<font color=red>RUN</font> -f filebox.stklos </A>
+
+      <p><li>
+        <b>stklos-widgets.stklos</b>
+	<br>
+	A quick demo of some of the STklos <i>Composite widgets</i>
+	which are available in this release.
+	<br>
+	<u>Run with</u>:
+	<A expr=(run "stklos-widgets.stklos")>
+	 <font color=red>RUN</font> -f stklos-widgets.stklos </A>
+	<br>
+	<u>Comment</u>: This code is a contribution of <b>Drew Whitehouse</b>
+    	<TT>&lt;Drew.Whitehouse@anu.edu.au&gt</TT>.
+      </ul>
+
+
+    <h4>2.3 STklos Applications</h4>
+    <ul>
+      <p><li>
+	<b>calc.stklos</b>
+	<br>
+	This is a simplistic calculator.
+	<br>
+	<u>Run with</u>:
+	<A expr=(run "calc.stklos")><font color=red>RUN</font> -f calc.stklos </A>     
+
+      <p><li>
+	<b>tkcolor.stklos</b>
+	<br>
+	This is a simple color picker written in <B>STklos</B>.
+	Clicking the left mouse button in the color box sets the text
+	color to the chosen color. Clicking the right button sets the
+	background color. The <i>Select</i> button sets the selection 
+	to a string which can be used (by pasting it in an xterm window) 
+	as argument of most X11 applications  to set their foreground and 
+	background color.
+	<br>
+	<u>Run with</u>:
+	<A expr=(run "tkcolor.stklos")><font color=red>RUN</font> -f tkcolor.stklos </A> 
+
+      <p><li>
+        <b>amib.stklos</b>
+	<br>
+	<B>A</B> <B>M</B>ini <B>I</B>nterface <B>B</B>uilder. 
+	<br>
+	<u>Run with</u>:
+	<A expr=(run "amib.stklos")> <font color=red>RUN</font> -f amib.stklos </A>
+	<br>
+	<u>Comment</u>: The current version of AMIB allow you to:
+	<ul>
+	  <li>place objects on a plane by drag and drop
+	  <li>resize objects
+	  <li>displace objects
+	  <li>change all the slots of an object (color, font, value, ...)
+	  <li>save an interface to reload it later in an application
+	</ul>
+	However it is far from a really usable interface builder (but
+	after all it is only a 600 lines of code application!!!!)
+
+      <p><li>
+	<b>S-scape.stklos</b>
+	<br>
+	The STk web browser. You are probably using it while seeing these lines.
+	<br>
+	<u>Run with</u>:
+	<A expr=(run "S-scape.stklos")>	<font color=red>RUN</font> -f S-scape.stklos </A>     
+   </ul>
+
+
+<hr>
+    <address><a href="mailto:eg@unice.fr">Erick Gallesio</a></address>
+<!-- Created: Sun Mar  1 15:56:45 CET 1998 -->
+<!-- hhmts start -->
+Last modified: Mon Sep 13 19:59:47 CEST 1999
+<!-- hhmts end -->
+  </body>
+</html>
+

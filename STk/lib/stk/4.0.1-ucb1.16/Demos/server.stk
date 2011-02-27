@@ -1,0 +1,46 @@
+#!/bin/sh
+:; exec /Applications/STk/bin/stk -f "$0" "$@"
+;;;;
+;;;;
+;;;; s e r v e r  . s t k		-- A simple sever
+;;;;
+;;;; Copyright © 1993-1999 Erick Gallesio - I3S-CNRS/ESSI <eg@unice.fr>
+;;;; 
+;;;; Permission to use, copy, modify, distribute,and license this
+;;;; software and its documentation for any purpose is hereby granted,
+;;;; provided that existing copyright notices are retained in all
+;;;; copies and that this notice is included verbatim in any
+;;;; distributions.  No written agreement, license, or royalty fee is
+;;;; required for any of the authorized uses.
+;;;; This software is provided ``AS IS'' without express or implied
+;;;; warranty.
+;;;;
+;;;;           Author: Erick Gallesio [eg@kaolin.unice.fr]
+;;;;    Creation date:  4-Feb-1995 18:17
+;;;; Last file update: 12-Sep-1999 23:36 (eg)
+
+(define s (make-server-socket))
+(define p (run-process 			; define a var to avoid GC problems
+	      "xterm" "-e" "telnet" "localhost"  
+	      (number->string (socket-port-number s))))
+
+(dynamic-wind 
+ ;; Init: Launch an xterm with telnet running on the s listening port and connect
+ (lambda ()
+   (socket-accept-connection s)
+   (format (socket-output s) "\nWelcome on the socket REPL.\n\n> ")
+   (flush (socket-output s)))
+
+ ;; Action: A toplevel like loop
+ (lambda ()
+   (let loop ()
+     (format (socket-output s) "; Result: ~s\n> " (eval (read (socket-input s))))
+     (flush (socket-output s))
+     (loop)))
+
+ ;; Termination: We go here when 
+ ;;     a) an error occurs 
+ ;;	b) connection is closed
+ (lambda ()
+   (format #t "Shutdown ......\n")
+   (socket-shutdown s)))

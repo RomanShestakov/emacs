@@ -1,0 +1,41 @@
+8
+
+dir
+903
+svn://rubyforge.org/var/svn/ruby-debug/trunk/bin
+svn://rubyforge.org/var/svn/ruby-debug
+
+
+
+2008-11-16T00:14:19.623645Z
+899
+rockyb
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+453b2852-3d18-0410-866e-d09c099698e4
+
+rdebug
+file
+
+
+
+
+2008-12-07T19:40:24.000000Z
+f084589b17cb49959b9968a9f1348581
+2008-11-16T00:14:19.623645Z
+899
+rockyb
+has-props
+

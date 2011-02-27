@@ -1,0 +1,46 @@
+
+j-mode.el,1645
+(defconst j-mode-version 12,372
+(defgroup j 170,5704
+(defcustom j-path 175,5810
+(defcustom j-command 180,5945
+(defcustom j-command-args 186,6041
+(defcustom j-dictionary-url191,6147
+(defcustom j-foreign-help-url 202,6459
+(defcustom j-vocabulary-help-url 208,6624
+(defcustom j-indent-offset 214,6776
+(defvar j-mode-map 221,6910
+(defvar j-mode-syntax-table 224,6969
+(defvar j-no-generic-defun-functions 228,7036
+(defconst j-keywords234,7175
+(defconst j-builtins257,7637
+(defconst j-constants276,8240
+(defconst j-font-lock-keywords 288,8511
+(defvar j-menu 434,13563
+(defun j-ensure-j-process 463,14672
+(defsubst j-looking-at-comment-p 485,15476
+(defsubst j-which-explict-definition 493,15745
+(defun j-end-of-explicit-definition 509,16474
+(defun j-end-of-explicit-definition-raw 519,16819
+(defun* j-beginning-of-explicit-definition 534,17412
+(defconst j-indenting-keywords-regexp552,17926
+(defconst j-dedenting-keywords-regexp562,18443
+(defun j-thing-outside-string 571,18810
+(defun* j-compute-indentation 587,19530
+(defun j-indent-line 605,20257
+(defun j-mode 626,20980
+(defun j-shell 721,24522
+(defun j-execute-buffer 727,24684
+(defun j-execute-region 760,25903
+(defun j-execute-line 778,26596
+(defun j-execute-explicit-definition 794,27166
+(defconst j-voc-to-doc-alist816,27768
+(defconst j-voc 943,30901
+(defconst j-foreign-regexp948,31065
+(defconst j-voc-regexp952,31116
+(defun j-foreign-to-doc 956,31266
+(defvar j-describe-function-history 960,31456
+(defun j-hack-google-url 963,31553
+(defun* j-describe-voc 979,32245
+(defun j-browse-help-foreign 1018,34205
+(defun j-browse-help-vocabulary 1023,34325

@@ -1,0 +1,7 @@
+/Users/romanshestakov/emacs/ruby/ruby-debug/trunk/test/gcd.rb:4
+def gcd(a, b)
+No readline suport
+Saving of history save is on.
+filename: The filename in which to record the command history is "./test/.rdebug_hist"
+save: Saving of history save is on.
+size: Debugger history size is 256

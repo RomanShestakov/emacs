@@ -1,0 +1,7 @@
+break gcd.rb:10
+catch RuntimeError
+set autoeval off
+set basename on
+set debuggertesting on
+set autolist off
+set autoirb off
