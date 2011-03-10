@@ -248,3 +248,13 @@
 
 ;;assosiate cfg files with erlang mode
 (setq auto-mode-alist (cons '(".cfg" . erlang-mode) auto-mode-alist))
+
+;; http://jamesaimonetti.com/2010/02/03/more-erlangemacs/
+(defun erl-shell-with-flags (flags)
+  "Start an erlang shell with flags"
+  (interactive (list (read-string "Flags: ")))
+  (set 'inferior-erlang-machine-options (split-string flags))
+  (erlang-shell))
+ 
+;; map Ctrl-c Ctrl-z to the new function
+(global-set-key "\C-c\C-x" 'erl-shell-with-flags)
