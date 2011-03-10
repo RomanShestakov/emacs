@@ -92,6 +92,11 @@
 ;; bind magit-status to c-x g
 (global-set-key (kbd "\C-x g") 'magit-status )
 
+;; bind C-Z to undo (also C-_ or C-/)
+(global-set-key (kbd "\C-z") 'undo )
+
+
+
 ;; make pager more
 (setenv "PAGER" "more")
 
