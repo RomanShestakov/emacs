@@ -2,6 +2,9 @@
 
 (require 'cl) ;; Common Lisp
 
+;switch off tool bar
+(tool-bar-mode 0)
+
 ;(load "~/emacs/emacs-tiny-tools/lisp/tiny/tinypath")
 
 (defvar emacs-root (if (or (eq system-type 'cygwin)
@@ -12,82 +15,65 @@
 		       "c:/home/romanshestakov/")
 "My home directory - root of my personal emacs load-path.")
 
-
 ;;add all the elisp
 (labels ((add-path (p)
 		   (add-to-list 'load-path
 				(concat emacs-root p)))))
 
 (add-to-list 'load-path "~/emacs/Include") ;;variouse el files
+(add-to-list 'load-path "~/emacs/font") ;; fonts
 (add-to-list 'load-path "~/emacs/erlang") ;; Configuration for Erlang mode
-;;(add-to-list 'load-path "~/emacs/flymake") ;; Flymake syntax checker
 (add-to-list 'load-path "~/emacs/flymake-erl") ;; Flymake syntax checker
 (add-to-list 'load-path "~/emacs/STk") ;; Scheme intepreter
-(add-to-list 'load-path "~/emacs/js2") ;; js2 editing
-;(add-to-list 'load-path "~/emacs/git-emacs") ;; Git
+;(add-to-list 'load-path "~/emacs/js2") ;; js2 editing
 (add-to-list 'load-path "~/emacs/magit") ;; Git
-(add-to-list 'load-path "~/emacs/esense-1.12") ;; Esense , erlang code completion
+;(add-to-list 'load-path "~/emacs/esense-1.12") ;; Esense , erlang code completion
 (add-to-list 'load-path "~/emacs/perl") ;; perl mode
 ;(add-to-list 'load-path "~/emacs/emacs-tiny-tools/lisp/tiny") ;; tiny-tools package
-(add-to-list 'load-path "~/Development/Reia/Emacs") ;; Reia mode
-(add-to-list 'load-path "~/emacs/textmate.el") ;; Textmate mode
 ;;(add-to-list 'load-path "~/emacs/ruby") ;; ruby mode
 (add-to-list 'load-path "~/emacs/pabbrev") ;; pabbrev
-(add-to-list 'load-path "~/emacs/org-6.28e/lisp") ;; org-mode
+;(add-to-list 'load-path "~/emacs/org-6.28e/lisp") ;; org-mode
+(add-to-list 'load-path "~/emacs/scala") ;;scala mode
 ;(add-path "emacs/erlang") ;; Configuration for Erlang mode
-;(add-path "flymake") ;; Flymake syntax checker
-;(add-path "STk") ;; Scheme intepreter
-;(add-path "js2") ;; js2 editing
-;(add-path "git-emacs") ;; Git
 ;(add-path "esense-1.12") ;; Esense
 (add-to-list 'load-path "~/emacs/color-theme") ;;color
-(add-to-list 'load-path "~/emacs/J") ;;J
-
+;(add-to-list 'load-path "~/emacs/J") ;;J
+;(add-to-list 'load-path "~/Development/kona") ;; k
 (add-to-list 'load-path "~/emacs/nitrogen-mode") ;; nitrogen-mode
+(add-to-list 'load-path "~/emacs/tuareg") ;;ocaml mode
 
 ;;color-theme-jonadabian
-
 (require 'color-theme)
 (require 'erlang_mode_config) ;; Loading Erlang mode
 (require 'flymake_config) ;; Loading flymake
 (require 'stk_mode_config) ;; Loading Scheme
-(require 'js2_mode_config) ;; Loading JS2
-;(require 'git-emacs) ;; Loading Git
+;(require 'js2_mode_config) ;; Loading JS2
 (require 'magit) ;;loading magit
-(require 'esense_config) ;; Loading Esense
-(require 'perl_config) ;; Loading Perl
+;(require 'esense_config) ;; Loading Esense
+;(require 'perl_config) ;; Loading Perl
 ;(require 'tinypath) ;; Loading tinylisp
 ;(require 'tinylisp) ;; Loading tinylisp
 ;(require 'tramp) ;; Loading tramp
-;(require 'reia) ;; Loading reia
-;(require 'textmate) ;; Loading textmate
-;(textmate-mode)
 ;(require 'ruby-mode-config) ;; Loading ruby
 ;;(require 'whole-line-or-region) ;; work on the line as if it was a region
 (require 'other) ;; load my custom useful functions
-(require 'j_config) ;;load J config
+;(require 'j_config) ;;load J config
 (require 'nitrogen-mode)
+(require 'scala_mode_config) ;; scala 
+;(require 'k-mode) ;; k mode
+(require 'tuareg_mode_config) ;; ocaml 
 
-
-(require 'org-install) ;; load org-mode
-(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-(define-key global-map "\C-cl" 'org-store-link)
-(define-key global-map "\C-ca" 'org-agenda)
-(setq org-log-done t)
-
+;; start k session
+(global-set-key (kbd "C-c i k") 'switch-to-k)
+;(require 'org-install) ;; load org-mode
+;(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+;(define-key global-map "\C-cl" 'org-store-link)
+;(define-key global-map "\C-ca" 'org-agenda)
+;(setq org-log-done t)
 
 (require 'pabbrev) ;; code completion
 (global-pabbrev-mode)
-
-
 (setq tramp-default-method "scp")
-
-
-;; redefine c-x c-e to <f9>
-;;(global-set-key (kbd "<f9>") 'eval-last-sexp ) ;; use F9 instead of Ctrl-X Ctrl-E
-
-;; bind tinylisp-error-find-1 to Ctrl-L, same key as GS secdb lint
-(global-set-key (kbd "C-l") 'tinylisp-error-find-1 ) 
 
 ;; bind magit-status to c-x g
 (global-set-key (kbd "\C-x g") 'magit-status )
@@ -95,7 +81,8 @@
 ;; bind C-Z to undo (also C-_ or C-/)
 (global-set-key (kbd "\C-z") 'undo )
 
-
+;; highlight region between the point and the mark
+(transient-mark-mode t)
 
 ;; make pager more
 (setenv "PAGER" "more")
@@ -116,8 +103,17 @@
       `((".*" ,user-temporary-file-directory t)))
 
 
+;(set-default-font "Inconselata-13")
 
-;; set color-theme-rshestakov
+;(require 'carbon-font)
+;(fixed-width-set-default-fontset "-apple-inconsolata-medium-r-normal--15-*-*-*-*-*-iso10646-1")
+
+;;(set-default-font "Monaco-13")
+(setq mac-allow-anti-aliasing t)  
+
+;(set-default-font "-apple-inconsolata-medium-r-normal--15-130-72-72-m-130-iso10646-1")
+
+;;set color-theme-rshestakov
 (defun color-theme-rshestakov ()
   "Dark blue background.
 Supports standard faces, font-lock, highlight-changes, widget and
@@ -125,128 +121,78 @@ custom."
   (interactive)
   (color-theme-install
    '(color-theme-rshestakov
-     ((foreground-color . "#CCBB77")
+     (
+      (foreground-color . "#CCBB77")
       (cursor-color . "medium turquoise")
-      (background-color . "#000055")
+      (background-color . "#000243")
       (background-mode . dark))
      (default ((t (nil))))
-     (modeline ((t (:foreground "cyan" :background "#007080"))))
-     (modeline-buffer-id ((t (:foreground "cyan" :background "#007080"))))
-     (modeline-mousable ((t (:foreground "cyan" :background "#007080"))))
-     (modeline-mousable-minor-mode ((t (:foreground "cyan" :background "#007080"))))
      (underline ((t (:underline t))))
      (region ((t (:background "#004080"))))
+     (font-lock-builtin-face ((t (:foreground "#00BBBB"))))
      (font-lock-keyword-face ((t (:foreground "#00BBBB"))))
-     (font-lock-comment-face ((t (:foreground "grey50" :bold t :italic t))))
+     (font-lock-comment-delimiter-face ((t (:foreground "grey30" :italic t))))
+     (font-lock-comment-face ((t (:foreground "grey30" :italic t))))
      (font-lock-string-face ((t (:foreground "#10D010"))))
      (font-lock-constant-face ((t (:foreground "indian red"))))
+     (font-lock-function-name-face ((t (:foreground "#69C4EB"))))
+     (font-lock-variable-name-face ((t (:foreground "#CCBB77"))))
      (highlight-changes-face ((t (:background "navy"))))
      (highlight-changes-delete-face ((t (:foreground "red" :background "navy"))))
-     (widget-field-face ((t (:foreground "black" :background "grey35"))))
-     (widget-inactive-face ((t (:foreground "gray"))))
-     (custom-button-face ((t (:foreground "yellow" :background "dark blue"))))
-     (custom-state-face ((t (:foreground "mediumaquamarine"))))
-     (custom-face-tag-face ((t (:foreground "goldenrod" :underline t))))
-     (custom-documentation-face ((t (:foreground "#10D010"))))
-     (custom-set-face ((t (:foreground "#2020D0")))))))
+     )))
 
-;(set-face-background 'region "#004080")
 (color-theme-rshestakov)
-
-
-
-
-
-
-
-
-;; (defun color-theme-example ()
-;;   "Example theme. Carbon copy of color-theme-gnome contributed by Jonadab."
-;;   (interactive)
-;;   (color-theme-install
-;;    '(color-theme-example
-;;      ((foreground-color . "wheat")
-;;       (background-color . "darkslategrey")
-;;       (background-mode . dark))
-;;      (default ((t (nil))))
-;;      (region ((t (:foreground "cyan" :background "dark cyan"))))
-;;      (underline ((t (:foreground "yellow" :underline t))))
-;;      (modeline ((t (:foreground "dark cyan" :background "wheat"))))
-;;      (modeline-buffer-id ((t (:foreground "dark cyan" :background "wheat"))))
-;;      (modeline-mousable ((t (:foreground "dark cyan" :background "wheat"))))
-;;      (modeline-mousable-minor-mode ((t (:foreground "dark cyan" :background "wheat"))))
-;;      (italic ((t (:foreground "dark red" :italic t))))
-;;      (bold-italic ((t (:foreground "dark red" :bold t :italic t))))
-;;      (font-lock-comment-face ((t (:foreground "Firebrick"))))
-;;      (bold ((t (:bold)))))))
-
-
-
-;; (color-theme-example)
-
-
-
-;; ;;;###autoload
-;; (defun color-theme-blackboardkjh ()
-;;   "Color theme by JD Huntington, based off the TextMate Blackboard theme, created 2008-11-27"
-;;   (interactive)
-;;   (color-theme-install
-;;    '(color-theme-blackboard
-;;      ((background-color . "#0C1021")
-;;       (background-mode . dark)
-;;       (border-color . "black")
-;;       (cursor-color . "#A7A7A7")
-;;       (foreground-color . "#F8F8F8")
-;;       (mouse-color . "sienna1"))
-;;      (default ((t (:background "#0C1021" :foreground "#F8F8F8"))))
-;;      (blue ((t (:foreground "blue"))))
-;;      (bold ((t (:bold t))))
-;;      (bold-italic ((t (:bold t))))
-;;      (border-glyph ((t (nil))))
-;;      (buffers-tab ((t (:background "#0C1021" :foreground "#F8F8F8"))))
-;;      (font-lock-builtin-face ((t (:foreground "#F8F8F8"))))
-;;      (font-lock-comment-face ((t (:italic t :foreground "#AEAEAE"))))
-;;      (font-lock-constant-face ((t (:foreground "#D8FA3C"))))
-;;      (font-lock-doc-string-face ((t (:foreground "DarkOrange"))))
-;;      (font-lock-function-name-face ((t (:foreground "#FF6400"))))
-;;      (font-lock-keyword-face ((t (:foreground "#FBDE2D"))))
-;;      (font-lock-preprocessor-face ((t (:foreground "Aquamarine"))))
-;;      (font-lock-reference-face ((t (:foreground "SlateBlue"))))
- 
-;;      (font-lock-regexp-grouping-backslash ((t (:foreground "#E9C062"))))
-;;      (font-lock-regexp-grouping-construct ((t (:foreground "red"))))
- 
-;;      (minibuffer-prompt ((t (:foreground "#5F5A60"))))
-;;      (ido-subdir ((t (:foreground "#CF6A4C"))))
-;;      (ido-first-match ((t (:foreground "#8F9D6A"))))
-;;      (ido-only-match ((t (:foreground "#8F9D6A"))))
-;;      (mumamo-background-chunk-submode ((t (:background "#222222"))))
- 
-;;      (font-lock-string-face ((t (:foreground "#61CE3C"))))
-;;      (font-lock-type-face ((t (:foreground "#8DA6CE"))))
-;;      (font-lock-variable-name-face ((t (:foreground "#FF6400"))))
-;;      (font-lock-warning-face ((t (:bold t :foreground "Pink"))))
-;;      (gui-element ((t (:background "#D4D0C8" :foreground "black"))))
-;;      (region ((t (:background "#253B76"))))
-;;      (mode-line ((t (:background "grey75" :foreground "black"))))
-;;      (highlight ((t (:background "#222222"))))
-;;      (highline-face ((t (:background "SeaGreen"))))
-;;      (italic ((t (nil))))
-;;      (left-margin ((t (nil))))
-;;      (text-cursor ((t (:background "yellow" :foreground "black"))))
-;;      (toolbar ((t (nil))))
-;;      (underline ((nil (:underline nil))))
-;;      (zmacs-region ((t (:background "snow" :foreground "ble")))))))
-
-
-
-;; (color-theme-blackboardkjh)
-
-
-(setq mac-allow-anti-aliasing t)  
-
-;;(set-default-font "Monaco-13")
 
 
 (ido-mode 'buffer)
 ;;(setq ido-enable-flex-matching t)
+
+
+;; ;;; Color theme based on Tango Palette. Created by danranx@gmail.com
+;; (defun color-theme-tango ()
+;;   "A color theme based on Tango Palette."
+;;   (interactive)
+;;   (color-theme-install
+;;    '(color-theme-tango
+;;      ((background-color . "#2e3436")
+;;       (background-mode . dark)
+;;       (border-color . "#888a85")
+;;       (cursor-color . "#fce94f")
+;;       (foreground-color . "#eeeeec")
+;;       (mouse-color . "#8ae234"))
+;;      ((help-highlight-face . underline)
+;;       (ibuffer-dired-buffer-face . font-lock-function-name-face)
+;;       (ibuffer-help-buffer-face . font-lock-comment-face)
+;;       (ibuffer-hidden-buffer-face . font-lock-warning-face)
+;;       (ibuffer-occur-match-face . font-lock-warning-face)
+;;       (ibuffer-read-only-buffer-face . font-lock-type-face)
+;;       (ibuffer-special-buffer-face . font-lock-keyword-face)
+;;       (ibuffer-title-face . font-lock-type-face))
+;;      (border ((t (:background "#888a85"))))
+;;      (fringe ((t (:background "grey10"))))
+;;      (mode-line ((t (:foreground "#eeeeec" :background "#555753"))))
+;;      (region ((t (:background "#555753"))))
+;;      (font-lock-builtin-face ((t (:foreground "#729fcf"))))
+;;      (font-lock-comment-face ((t (:foreground "#888a85"))))
+;;      (font-lock-constant-face ((t (:foreground "#8ae234"))))
+;;      (font-lock-doc-face ((t (:foreground "#888a85"))))
+;;      (font-lock-keyword-face ((t (:foreground "#729fcf" :bold t))))
+;;      (font-lock-string-face ((t (:foreground "#ad7fa8" :italic t))))
+;;      (font-lock-type-face ((t (:foreground "#8ae234" :bold t))))
+;;      (font-lock-variable-name-face ((t (:foreground "#eeeeec"))))
+;;      (font-lock-warning-face ((t (:bold t :foreground "#f57900"))))
+;;      (font-lock-function-name-face ((t (:foreground "#edd400" :bold t :italic t))))
+;;      (comint-highlight-input ((t (:italic t :bold t))))
+;;      (comint-highlight-prompt ((t (:foreground "#8ae234"))))
+;;      (isearch ((t (:background "#f57900" :foreground "#2e3436"))))
+;;      (isearch-lazy-highlight-face ((t (:foreground "#2e3436" :background "#e9b96e"))))
+;;      (show-paren-match-face ((t (:foreground "#2e3436" :background "#73d216"))))
+;;      (show-paren-mismatch-face ((t (:background "#ad7fa8" :foreground "#2e3436"))))
+;;      (minibuffer-prompt ((t (:foreground "#729fcf" :bold t))))
+;;      (info-xref ((t (:foreground "#729fcf"))))
+;;      (info-xref-visited ((t (:foreground "#ad7fa8"))))
+;;      )))
+
+;; (provide 'color-theme-tango)
+
+

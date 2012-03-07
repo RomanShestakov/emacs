@@ -1,13 +1,13 @@
 (provide 'erlang_mode_config)
 
-;;(setq erlang-root-dir "/usr/local/Cellar/erlang/R14B01/lib/erlang")
-(setq erlang-root-dir "/usr/local/Cellar/erlang/R14B01/lib/erlang")
-(setq load-path  (cons "/usr/local/Cellar/erlang/R14B01/lib/erlang/lib/tools-2.6.6.2/emacs" load-path))
-(setq exec-path (cons "/usr/local/Cellar/erlang/R14B01/lib/erlang/bin" exec-path))
+;;(setq erlang-root-dir "/usr/local/Cellar/erlang/R14B03/lib/erlang")
+(setq erlang-root-dir "/usr/local/lib/erlang/lib")
+(setq load-path  (cons "/usr/local/lib/erlang/lib/tools-2.6.6.6/emacs" load-path))
+(setq exec-path (cons "/usr/local/lib/erlang/lib/bin" exec-path))
 (require 'erlang-start)
 
 
-(let ((distel-dir "~/emacs/distel-4.03/elisp"))
+(let ((distel-dir "~/emacs/distel/elisp"))
   (unless (member distel-dir load-path)
     (setq load-path (append load-path (list distel-dir)))))
 (require 'distel)
@@ -17,7 +17,7 @@
 (add-hook 'erlang-mode-hook
       (lambda ()
         ;; when starting an Erlang shell in Emacs, default in the node name
-        (setq inferior-erlang-machine-options '("-sname" "emacs"))
+        (setq inferior-erlang-machine-options '("-name" "emacs@127.0.0.1"))
         ;; add Erlang functions to an imenu menu
         (imenu-add-to-menubar "imenu")
         ;;(define-key erlang-mode-map [f5] 'compile)
@@ -98,7 +98,7 @@
   ;; when starting an Erlang shell in Emacs, default in the node name
   (setq inferior-erlang-machine-options '("-sname" "emacs"))
 
-  (define-key erlang-mode-map [f13]
+  (define-key erlang-mode-map [f9]
     (lambda()
       (interactive)
       (progn
@@ -106,52 +106,55 @@
 
 
 
-(let ((distel-dir "/Users/romanshestakov/src/distel4/elisp"))
-  (unless (member distel-dir load-path)
-    (setq load-path (append load-path (list distel-dir)))))
-(require 'distel)
-(distel-setup)
+;; (let ((distel-dir "/Users/romanshestakov/src/distel4/elisp"))
+;;   (unless (member distel-dir load-path)
+;;     (setq load-path (append load-path (list distel-dir)))))
+;; (require 'distel)
+;; (distel-setup)
 
-;; Some Erlang customizations
-(add-hook 'erlang-mode-hook
-          (lambda ()
-            ;; when starting an Erlang shell in Emacs, default in the node name
-            (setq inferior-erlang-machine-options '("-sname" "emacs"))
-            ;; add Erlang functions to an imenu menu
-            (imenu-add-to-menubar "imenu")))
+;; ;; Some Erlang customizations
+;; (add-hook 'erlang-mode-hook
+;;           (lambda ()
+;;             ;; when starting an Erlang shell in Emacs, default in the node name
+;;             (setq inferior-erlang-machine-options '("-sname" "emacs"))
+;;             ;; add Erlang functions to an imenu menu
+;;             (imenu-add-to-menubar "imenu")))
 
-(setq erl-nodename-cache
-      (make-symbol
-       (concat
-        "emacs@rs")))
-;; Mac OS X uses "name.local" instead of "name", this should work
-;; pretty much anywhere without having to muck with NetInfo
-;; ... but I only tested it on Mac OS X.
-                                        ;(car (split-string (shell-command-to-string "hostname"))))))
-
-
-;; A number of the erlang-extended-mode key bindings are useful in the shell too
-(defconst distel-shell-keys
-  '(("\C-\M-i"   erl-complete)
-    ("\M-?"      erl-complete)
-    ("\M-."      erl-find-source-under-point)
-    ("\M-,"      erl-find-source-unwind)
-    ("\M-*"      erl-find-source-unwind)
-    )
-  "Additional keys to bind when in Erlang shell.")
-
-(add-hook 'erlang-shell-mode-hook
-          (lambda ()
-            ;; add some Distel bindings to the Erlang shell
-            (dolist (spec distel-shell-keys)
-              (define-key erlang-shell-mode-map (car spec) (cadr spec)))))
+;; (setq erl-nodename-cache
+;;       (make-symbol
+;;        (concat
+;;         "emacs@rs")))
+;; ;; Mac OS X uses "name.local" instead of "name", this should work
+;; ;; pretty much anywhere without having to muck with NetInfo
+;; ;; ... but I only tested it on Mac OS X.
+;;                                         ;(car (split-string (shell-command-to-string "hostname"))))))
 
 
-;;(add-hook 'erlang-shell-mode-hook
-          ;;(lambda()
-            ;; start erlang shell
-;;        (erlang-shell-display))
+;; ;; A number of the erlang-extended-mode key bindings are useful in the shell too
+;; (defconst distel-shell-keys
+;;   '(("\C-\M-i"   erl-complete)
+;;     ("\M-?"      erl-complete)
+;;     ("\M-."      erl-find-source-under-point)
+;;     ("\M-,"      erl-find-source-unwind)
+;;     ("\M-*"      erl-find-source-unwind)
+;;     )
+;;   "Additional keys to bind when in Erlang shell.")
 
+;; (add-hook 'erlang-shell-mode-hook
+;;           (lambda ()
+;;             ;; add some Distel bindings to the Erlang shell
+;;             (dolist (spec distel-shell-keys)
+;;               (define-key erlang-shell-mode-map (car spec) (cadr spec)))))
+
+
+;; (add-hook 'erlang-shell-mode-hook
+;;           (lambda()
+;;             ;;start erlang shell
+;; 	    (setq newdir (concat default-directory ".."))
+;; 	    (message "current: %S" newdir)
+;; 	    (setq default-directory newdir)
+;; 	    (erlang-shell-display)))
+	  
 ;;erlang compilation
 ;;http://www.rsaccon.com/2007/10/erlang-compilation-with-emacs.html
 (defun my-erlang-compile()
@@ -230,20 +233,10 @@
                      file))))
 
 
-
-;(define-key erlang-mode-map [f8]
- ; (lambda ()
-  ;  (interactive)
-   ; (funcall (quote erlang-skel-header)
-    ;        (quote tempo-template-erlang-function-header))))
-
-;(global-set-key [(f6)] (lambda () (interactive) (get-erl-man)))
-
 (global-set-key [(M-f8)]
   (lambda ()
     (interactive)
-    (funcall (quote erlang-skel-f-header)
- 	    (quote tempo-template-erlang-function-header))))
+    (funcall (quote tempo-template-function-header))))
 
 
 ;;assosiate cfg files with erlang mode
@@ -258,3 +251,14 @@
  
 ;; map Ctrl-c Ctrl-z to the new function
 (global-set-key "\C-c\C-x" 'erl-shell-with-flags)
+
+
+;; template for func headers
+(tempo-define-template "function-header"
+   '(" 
+%%--------------------------------------------------------------------
+%% @doc
+%%
+%% @end
+%%--------------------------------------------------------------------
+-spec"  ))
