@@ -6,6 +6,10 @@
 (setq exec-path (cons "/usr/local/lib/erlang/lib/bin" exec-path))
 (require 'erlang-start)
 
+(add-to-list 'load-path "~/emacs/pabbrev") ;; pabbrev
+(require 'pabbrev) ;; code completion
+(global-pabbrev-mode)
+
 
 (let ((distel-dir "~/emacs/distel/elisp"))
   (unless (member distel-dir load-path)
@@ -154,7 +158,7 @@
 ;; 	    (message "current: %S" newdir)
 ;; 	    (setq default-directory newdir)
 ;; 	    (erlang-shell-display)))
-	  
+
 ;;erlang compilation
 ;;http://www.rsaccon.com/2007/10/erlang-compilation-with-emacs.html
 (defun my-erlang-compile()
@@ -190,7 +194,7 @@
 ;;   (setq inferior-erlang-machine-options '("-sname" "emacs"))
 
 
-;;(global-set-key (kbd "C-l") 'tinylisp-error-find-1 ) 
+;;(global-set-key (kbd "C-l") 'tinylisp-error-find-1 )
 ;;[f13]
 ;; (define-key erlang-mode-map [f13]
 ;;   (lambda()
@@ -248,14 +252,14 @@
   (interactive (list (read-string "Flags: ")))
   (set 'inferior-erlang-machine-options (split-string flags))
   (erlang-shell))
- 
+
 ;; map Ctrl-c Ctrl-z to the new function
 (global-set-key "\C-c\C-x" 'erl-shell-with-flags)
 
 
 ;; template for func headers
 (tempo-define-template "function-header"
-   '(" 
+   '("
 %%--------------------------------------------------------------------
 %% @doc
 %%

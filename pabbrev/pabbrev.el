@@ -1,7 +1,6 @@
 ;; pabbrev.el --- Predictive abbreviation expansion
 
-;; $Revision: 729 $
-;; $Date: 2007-11-29 13:55:21 +0000 (Thu, 29 Nov 2007) $
+;; Version: 3.0
 
 ;; This file is not part of Emacs
 
@@ -61,7 +60,7 @@
 ;; previously.  By hitting [tab] at any point the user can complete the
 ;; word.  The [tab] key is normally bound to `indent-line'.
 ;; `pabbrev-mode' preserves access to this command (or whatever else
-;; [tab] was bound to), if there is not current expansion. 
+;; [tab] was bound to), if there is no current expansion. 
 ;;
 ;; Sometimes you do not want to select the most commonly occurring
 ;; word, but a less frequently occurring word.  You can access this
@@ -260,6 +259,8 @@
 ;; Carsten Dominik suggested I add the package suppport rather than the
 ;; existing defcustom which was not as good I think. 
 ;;
+;; Scott Vokes added a nice patch, adding the single/multiple expansion, the
+;; universal argument support and some bug fixes.
 
 ;;; Code:
 (eval-when-compile (require 'cl))
@@ -378,33 +379,51 @@ I'm not telling you which version, I prefer."
 
 ;; stolen from font-lock!
 (if pabbrev-xemacs-p
+    (progn
+      (defface pabbrev-suggestions-face
+        '((((class color) (background dark)) (:foreground "tan"))
+          (((class color) (background light)) (:foreground "green4"))
+          (((class grayscale) (background light)) (:foreground "DimGray" :italic t))
+          (((class grayscale) (background dark)) (:foreground "LightGray" :italic t))
+          (t (:bold t)))
+        "Face for displaying suggestions."
+        :group 'pabbrev)
+      (defface pabbrev-single-suggestion-face
+        '((((class color) (background dark)) (:foreground "tan"))
+          (((class color) (background light)) (:foreground "green4"))
+          (((class grayscale) (background light)) (:foreground "DimGray" :italic t))
+          (((class grayscale) (background dark)) (:foreground "LightGray" :italic t))
+          (t (:bold t)))
+        "Face for displaying one suggestion."
+        :group 'pabbrev)
+      (defface pabbrev-suggestions-label-face
+        nil "Font lock mode face used to highlight suggestions"
+        :group 'pabbrev))
+  (progn                                ; GNU Emacs
     (defface pabbrev-suggestions-face
-      '((((class color) (background dark)) (:foreground "tan"))
-	(((class color) (background light)) (:foreground "green4"))
-	(((class grayscale) (background light)) (:foreground "DimGray" :italic t))
-	(((class grayscale) (background dark)) (:foreground "LightGray" :italic t))
-	(t (:bold t)))
+      '((((type tty) (class color)) (:foreground "green"))
+        (((class grayscale) (background light)) (:foreground "Gray90" :bold t))
+        (((class grayscale) (background dark)) (:foreground "DimGray" :bold t))
+        (((class color) (background light)) (:foreground "ForestGreen"))
+        (((class color) (background dark)) (:foreground "Red"))
+        (t (:bold t :underline t)))
       "Face for displaying suggestions."
       :group 'pabbrev)
-  (defface pabbrev-suggestions-face
-    '((((type tty) (class color)) (:foreground "green"))
-      (((class grayscale) (background light)) (:foreground "Gray90" :bold t))
-      (((class grayscale) (background dark)) (:foreground "DimGray" :bold t))
-      (((class color) (background light)) (:foreground "ForestGreen"))
-      (((class color) (background dark)) (:foreground "PaleGreen"))
-      (t (:bold t :underline t)))
-    "Face for displaying suggestions."
-    :group 'pabbrev))
-  
-(if pabbrev-xemacs-p
-    (defface pabbrev-suggestions-label-face
-      nil "Font lock mode face used to highlight suggestions"
+    (defface pabbrev-single-suggestion-face
+      '((((type tty) (class color)) (:foreground "green"))
+        (((class grayscale) (background light)) (:foreground "Gray70" :bold t))
+        (((class grayscale) (background dark)) (:foreground "DarkSlateGray" :bold t))
+        (((class color) (background light)) (:foreground "OliveDrab"))
+        (((class color) (background dark)) (:foreground "PaleGreen"))
+        (t (:bold t :underline t)))
+      "Face for displaying one suggestion."
       :group 'pabbrev)
-  (defface pabbrev-suggestions-label-face
-    '((t
-       :inverse-video t))
-    "Font Lock mode face used to highlight suggestions"
-    :group 'pabbrev))
+    (defface pabbrev-suggestions-label-face
+      '((t
+         :inverse-video t))
+      "Font Lock mode face used to highlight suggestions"
+      :group 'pabbrev)))
+
 
 ;;;; End user Customizable variables.
 
@@ -417,15 +436,19 @@ I'm not telling you which version, I prefer."
  (lambda(x)
    (put x 'pabbrev-expand-after-command t))
  '(self-insert-command mouse-set-point delete-char
-                       backward-delete-char-untabify pabbrev-expand-maybe))
+                       backward-delete-char-untabify pabbrev-expand-maybe
+                       pabbrev-expand-maybe-minimal pabbrev-expand-maybe-full
+                       universal-argument universal-argument-other-key))
 
 ;; mark modes in which to not activate pabbrev with global mode. 
 (mapc
  (lambda(x)
    (put x 'pabbrev-global-mode-excluded-modes t))
  '(shell-mode 
+   Custom-mode
    custom-mode 
    telnet-mode
+   term-mode
    dired-mode 
    eshell-mode
    ;; gnus article mode is read-only so should be missed anyway,
@@ -685,9 +708,7 @@ start and end positions")
 
 (defun pabbrev-mode-on()
   "Turn `pabbrev-mode' on."
-  (make-local-hook 'pre-command-hook)
   (add-hook 'pre-command-hook 'pabbrev-pre-command-hook nil t)
-  (make-local-hook 'post-command-hook)
   (add-hook 'post-command-hook 'pabbrev-post-command-hook nil t))
 
 (defun pabbrev-mode-off()
@@ -828,15 +849,16 @@ anything. Toggling it off, and then on again will usually restore functionality.
   "Overlay for offered completion.")
 (make-variable-buffer-local 'pabbrev-overlay)
 
-(defun pabbrev-set-overlay(start end)
+(defun pabbrev-set-overlay(start end count)
   "Move overlay to START END location."
   (unless pabbrev-overlay
     (setq pabbrev-overlay
 	  ;; set an overlay at 1 1. Originally this used to be a 0 0 but
 	  ;; it crashes xemacs...well I never....
 	  (make-overlay 1 1)))
-  (overlay-put pabbrev-overlay
-	       'face 'pabbrev-suggestions-face)
+  (overlay-put pabbrev-overlay 'face
+               (if (> count 1) 'pabbrev-suggestions-face
+                 'pabbrev-single-suggestion-face))
   (move-overlay pabbrev-overlay start end (current-buffer)))
 
 (defun pabbrev-delete-overlay()
@@ -875,29 +897,78 @@ at buffer position END."
               (cons end (point)))
              (let ((point-1 (- (point) 1)))
                (pabbrev-set-overlay
-                (- point-1 (length expansion)) point-1))))))))
+                (- point-1 (length expansion)) point-1
+                (length suggestions)))))))))
 
 
 
+(defvar pabbrev-last-expansion-suggestions nil 
+  "Cached alternative suggestions from the last expansion.")
 
-(defun pabbrev-expand-maybe()
-  "Expand abbreviation, or run previous command.
-If there is no expansion the command returned by
+
+;; patch from Trey Jackson to fix problem with python (which uses tab to cycle
+;; through indentation levels
+(defun pabbrev-call-previous-tab-binding ()
+  "Call the function normally associated with [tab]."
+  (let ((prev-binding (pabbrev-get-previous-binding)))
+    (if (and (fboundp prev-binding)
+             (not (eq prev-binding 'pabbrev-expand-maybe)))
+        (let ((last-command (if (eq last-command this-command) 
+                                prev-binding
+                              last-command))
+              (this-command prev-binding))
+          (funcall prev-binding)))))
+
+
+;; (defun pabbrev-call-previous-tab-binding ()
+;;   "Call the function normally associated with [tab]."
+;;   (let ((prev-binding (pabbrev-get-previous-binding)))
+;;     (if (and (fboundp prev-binding)
+;;              (not (eq prev-binding 'pabbrev-expand-maybe)))
+;;         (funcall prev-binding))))
+
+
+(defun pabbrev-expand-maybe(uarg)
+  "Call appropriate expansion command based on whether
+minimal or full expansion is desired. If there is no expansion the command returned by
 `pabbrev-get-previous-binding' will be run instead."
-  (interactive)
-  ;; call expand if we can
-  (if (and (eq this-command 'pabbrev-expand-maybe)
-	   (> (length pabbrev-expansion-suggestions) 1))
-      (pabbrev-suggestions-goto-buffer)
-    (if pabbrev-expansion
-	(pabbrev-expand)
-      ;; hopefully this code will actually work as intended now. It's
-      ;; been around the house a few times already!
-      (let ((prev-binding
-             (pabbrev-get-previous-binding)))
-        (if (and (fboundp prev-binding)
-		 (not (eq prev-binding 'pabbrev-expand-maybe)))
-	    (funcall prev-binding))))))
+  (interactive "p")
+  (if pabbrev-minimal-expansion-p
+      (pabbrev-expand-maybe-minimal uarg)
+      (pabbrev-expand-maybe-full uarg)))
+
+
+(defun pabbrev-expand-maybe-minimal (uarg)
+  "Expand the minimal common prefix at point.
+With prefix argument, bring up the menu of all full expansions."
+  (if (= uarg 4)
+      (if (> (length pabbrev-expansion-suggestions) 1)
+          (pabbrev-suggestions-goto-buffer pabbrev-expansion-suggestions)
+        (pabbrev-call-previous-tab-binding))
+    (if pabbrev-expansion 
+        (pabbrev-expand)
+      (pabbrev-call-previous-tab-binding))))
+
+
+(defun pabbrev-expand-maybe-full (uarg)
+  "Expand fully to the most common abbreviation at point.
+With prefix argument, bring up a menu of all full expansions."
+  (cond
+   ((= uarg 4)
+    (if (> (length pabbrev-expansion-suggestions) 1)
+        (pabbrev-suggestions-goto-buffer pabbrev-expansion-suggestions)
+      (pabbrev-call-previous-tab-binding)))
+   ((eq last-command 'pabbrev-expand-maybe)
+    (if (> (length pabbrev-last-expansion-suggestions) 1)
+        (pabbrev-suggestions-goto-buffer pabbrev-last-expansion-suggestions)
+      (pabbrev-call-previous-tab-binding)))
+   (pabbrev-expansion
+    (progn
+      (setq pabbrev-last-expansion-suggestions pabbrev-expansion-suggestions)
+      (pabbrev-expand)))
+   (t (pabbrev-call-previous-tab-binding))))
+
+;; (setq pabbrev-minimal-expansion-p nil)
 
 
 (defun pabbrev-show-previous-binding () 
@@ -942,7 +1013,8 @@ The command `pabbrev-show-previous-binding' prints this out."
 
 
 (defvar pabbrev-expand-commands
-  '(pabbrev-expand-maybe pabbrev-expand)
+  '(pabbrev-expand-maybe pabbrev-expand 
+                         pabbrev-expand-maybe-minimal pabbrev-expand-maybe-full)
   "List of commands which will be used expand.
 We need to know this, or the possible expansions are deleted
 before the command gets run.")
@@ -995,12 +1067,12 @@ before the command gets run.")
   "Stores the window configuration before presence of a window buffer")
 
 
-(defun pabbrev-suggestions-goto-buffer()
+(defun pabbrev-suggestions-goto-buffer(suggestion-list)
   "Jump into the suggestions buffer."
   ;;  (if pabbrev-suggestions-buffer-enable
   ;;    (pabbrev-suggestions-delete-window))
   (setq pabbrev-window-configuration (current-window-configuration))
-  (pabbrev-suggestions-buffer pabbrev-expansion-suggestions "")
+  (pabbrev-suggestions-buffer suggestion-list "")
   (shrink-window-if-larger-than-buffer
    (select-window (get-buffer-window " *pabbrev suggestions*"))))
 
@@ -1099,6 +1171,7 @@ matching substring, while \\[pabbrev-suggestions-delete-window] just deletes the
     (define-key pabbrev-select-mode-map [backspace] 'pabbrev-suggestions-delete)
     (define-key pabbrev-select-mode-map "\C-m" 'pabbrev-suggestions-minimum)
     (define-key pabbrev-select-mode-map " " 'pabbrev-suggestions-delete-window)
+    (define-key pabbrev-select-mode-map "q" 'pabbrev-suggestions-delete-window)
     ;; define all the standard insert commands
     (loop for i from 0 to 9 do
       (define-key pabbrev-select-mode-map

@@ -24,16 +24,16 @@
 (add-to-list 'load-path "~/emacs/font") ;; fonts
 (add-to-list 'load-path "~/emacs/erlang") ;; Configuration for Erlang mode
 (add-to-list 'load-path "~/emacs/flymake-erl") ;; Flymake syntax checker
-(add-to-list 'load-path "~/emacs/STk") ;; Scheme intepreter
+;(add-to-list 'load-path "~/emacs/STk") ;; Scheme intepreter
 ;(add-to-list 'load-path "~/emacs/js2") ;; js2 editing
 (add-to-list 'load-path "~/emacs/magit") ;; Git
 ;(add-to-list 'load-path "~/emacs/esense-1.12") ;; Esense , erlang code completion
-(add-to-list 'load-path "~/emacs/perl") ;; perl mode
+;(add-to-list 'load-path "~/emacs/perl") ;; perl mode
 ;(add-to-list 'load-path "~/emacs/emacs-tiny-tools/lisp/tiny") ;; tiny-tools package
 ;;(add-to-list 'load-path "~/emacs/ruby") ;; ruby mode
-(add-to-list 'load-path "~/emacs/pabbrev") ;; pabbrev
+;(add-to-list 'load-path "~/emacs/pabbrev") ;; pabbrev
 ;(add-to-list 'load-path "~/emacs/org-6.28e/lisp") ;; org-mode
-(add-to-list 'load-path "~/emacs/scala") ;;scala mode
+;(add-to-list 'load-path "~/emacs/scala") ;;scala mode
 ;(add-path "emacs/erlang") ;; Configuration for Erlang mode
 ;(add-path "esense-1.12") ;; Esense
 (add-to-list 'load-path "~/emacs/color-theme") ;;color
@@ -41,12 +41,13 @@
 ;(add-to-list 'load-path "~/Development/kona") ;; k
 (add-to-list 'load-path "~/emacs/nitrogen-mode") ;; nitrogen-mode
 (add-to-list 'load-path "~/emacs/tuareg") ;;ocaml mode
+(add-to-list 'load-path "~/emacs/python") ;;python mode
 
 ;;color-theme-jonadabian
 (require 'color-theme)
 (require 'erlang_mode_config) ;; Loading Erlang mode
 (require 'flymake_config) ;; Loading flymake
-(require 'stk_mode_config) ;; Loading Scheme
+;(require 'stk_mode_config) ;; Loading Scheme
 ;(require 'js2_mode_config) ;; Loading JS2
 (require 'magit) ;;loading magit
 ;(require 'esense_config) ;; Loading Esense
@@ -59,9 +60,12 @@
 (require 'other) ;; load my custom useful functions
 ;(require 'j_config) ;;load J config
 (require 'nitrogen-mode)
-(require 'scala_mode_config) ;; scala 
+;(require 'scala_mode_config) ;; scala
 ;(require 'k-mode) ;; k mode
-(require 'tuareg_mode_config) ;; ocaml 
+(require 'tuareg_mode_config) ;; ocaml
+(require 'python_mode_config) ;; python
+;(require 'epy-init)
+;(load-file "~/emacs/emacs-for-python/epy-init.el")
 
 ;; start k session
 (global-set-key (kbd "C-c i k") 'switch-to-k)
@@ -71,15 +75,20 @@
 ;(define-key global-map "\C-ca" 'org-agenda)
 ;(setq org-log-done t)
 
-(require 'pabbrev) ;; code completion
-(global-pabbrev-mode)
+;(require 'pabbrev) ;; code completion
+;(global-pabbrev-mode)
+
 (setq tramp-default-method "scp")
+;(put python-mode 'pabbrev-global-mode-excluded-modes t)
 
 ;; bind magit-status to c-x g
 (global-set-key (kbd "\C-x g") 'magit-status )
 
 ;; bind C-Z to undo (also C-_ or C-/)
 (global-set-key (kbd "\C-z") 'undo )
+
+;; redefine etags keybindings
+(global-set-key (kbd "M-,") 'pop-tag-mark)
 
 ;; highlight region between the point and the mark
 (transient-mark-mode t)
@@ -109,7 +118,7 @@
 ;(fixed-width-set-default-fontset "-apple-inconsolata-medium-r-normal--15-*-*-*-*-*-iso10646-1")
 
 ;;(set-default-font "Monaco-13")
-(setq mac-allow-anti-aliasing t)  
+(setq mac-allow-anti-aliasing t)
 
 ;(set-default-font "-apple-inconsolata-medium-r-normal--15-130-72-72-m-130-iso10646-1")
 
@@ -147,6 +156,7 @@ custom."
 (ido-mode 'buffer)
 ;;(setq ido-enable-flex-matching t)
 
+(setq py-python-command-args '("--colors=linux"))
 
 ;; ;;; Color theme based on Tango Palette. Created by danranx@gmail.com
 ;; (defun color-theme-tango ()
@@ -195,4 +205,8 @@ custom."
 
 ;; (provide 'color-theme-tango)
 
-
+;;auto-compete
+(add-to-list 'load-path "~/emacs/ac")
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "~/emacs/ac/ac-dict")
+(ac-config-default)

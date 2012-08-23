@@ -4,8 +4,9 @@
 ### Please rewrite the following 2 variables 
 ### ($ocamlc, @ocamlc_options)
 
-$ocamlc = '/usr/local/bin/ocamlc'; # where is ocamlc
+$ocamlc = '/opt/godi/bin/ocamlc'; # where is ocamlc
 @ocamlc_options  = ('-c -thread unix.cma threads.cma graphics.cma');   # e.g. ('-fglasgow-exts')
+@ocamlc_packages = ('core');
 
 ### the following should not been edited ###
 
